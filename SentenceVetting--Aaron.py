@@ -75,9 +75,7 @@ def findVIndex(sentence):
 	#find the first VB word in the sentence
 	for word in sentence:
 		tag = word[1]
-		if tag == "VB" or tag == "VBD" 
-			or tag == "VBG" or tag == "VBN" 
-			or tag == "VBP" or tag == "VBZ":
+		if tag == "VB" or tag == "VBD" or tag == "VBG" or tag == "VBN" or tag == "VBP" or tag == "VBZ":
 
 			return sentence.index(word)
 
@@ -133,7 +131,7 @@ def runTest():
 		
 		#WARNING CHANGED IMPORTANTSENTENCES TO A TUPLE, ORIGINIALLY A LIST
 		if terms.index(term) % 100 == 0:
-			print ("Completed " + str(terms.index(term)) " of " + str(len(terms)) + " terms")
+			print ("Completed " + str(terms.index(term)) + " of " + str(len(terms)) + " terms")
 	
 	
 	f = open("useful_output.txt", 'w')
@@ -147,10 +145,54 @@ def runTest():
 		f.write("\n\n")
 	print(useful, notuseful) #extra info, can remove
 
+
+def genForTermsList(terms):
+
+	termDict = defaultdict(list)
+	book = 'biology_raw.xhtml'
+	tree = parser.parse_into_tree(book)
+
+	for term in terms:
+		listGen.makeFile(book, term, terms, tree)
+		fileList = listGen.genSentences('output_file.txt')   
+		sentences = listGen.listToString(fileList)
+		importantSentences = findDefSentences(sentences, term)
+
+		termDict[term] += importantSentences[0]
+		
+		#WARNING CHANGED IMPORTANTSENTENCES TO A TUPLE, ORIGINIALLY A LIST
 	
+	f = open("useful_output.txt", 'w')
+	for KV in termDict.keys():
+		f.write(KV) 
+		f.write("\n")
+		value = termDict[KV]
+		for v in value:
+			f.write(v)
+			f.write(" ")
+		f.write("\n\n")
 
 
-runTest()
+
+#runTest()
+
+termsList = ['anaerobic', 
+			'renal capsule',
+			 'diabetes insipidus', 
+			 'Apoda', 
+			 'transitional epithelia',
+			 'follicle stimulating hormone (FSH)',
+			 'septa',
+			 'loam', 
+			 'lipid', 
+			 'capillary', 
+			 'progesterone', 
+			 'testes', 
+			 'hypothyroidism', 
+			 'beta cell', 
+			 'compliance']
+
+genForTermsList(termsList)
 
 
 
