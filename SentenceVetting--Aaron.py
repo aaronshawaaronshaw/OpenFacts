@@ -34,8 +34,17 @@ def findDefSentences(df, key):
 		tagged = iterTaggedSentences(key, tagged_sentences, sentences)
 	return tagged
 	
+"""
+Iterates through all tagged sentences and determines if it is considered relevant or not.
+Finds the idx of w and compares to the idx of the first verb. A sentence is relevant if w
+index is before verb index
 
+Input-- w: the key term, tagged_sentences: a list of parsed and tagged sentences, sentences:
+		the original list of sentences that tagged_sentences came from
 
+Output-- result: a sublist of sentences that were deemed relevant, backup: a testing list
+		used in debugging that can be ignored
+"""
 def iterTaggedSentences(w, tagged_sentences, sentences):
 	result = []
 	backup = []
